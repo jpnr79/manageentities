@@ -50,11 +50,11 @@ class PluginManageentitiesMonthly extends CommonDBTM {
                     'background-color:#FFBA3B'];
    static $class = ['styleItemTitle', 'styleContractTitle'];
 
-   static function canView() {
+   static function canView():bool {
       return Session::haveRight(self::$rightname, READ);
    }
 
-   static function canCreate() {
+   static function canCreate():bool {
       return Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, DELETE]);
    }
 
@@ -109,7 +109,7 @@ class PluginManageentitiesMonthly extends CommonDBTM {
                      ORDER BY `glpi_entities`.`name`,
                               `glpi_tickettasks`.`end` ASC";
 
-      $resEntity   = $DB->query($queryEntity);
+      $resEntity   = $DB->doQuery($queryEntity);
       $nbTotEntity = ($resEntity ? $DB->numrows($resEntity) : 0);
 
       //We get entities datas
@@ -187,7 +187,7 @@ class PluginManageentitiesMonthly extends CommonDBTM {
             //
             //                     AND (`glpi_plugin_manageentities_contractdays`.`end_date` >= '".$values['begin_date']."'
             //                           OR `glpi_plugin_manageentities_contractdays`.`end_date` IS NULL)
-            $resContractDay   = $DB->query($queryContractDay);
+            $resContractDay   = $DB->doQuery($queryContractDay);
             $nbTotContractDay = ($resContractDay ? $DB->numrows($resContractDay) : 0);
 
             // We get contract days datas
@@ -382,7 +382,7 @@ class PluginManageentitiesMonthly extends CommonDBTM {
       $month  = date('m', mktime(12, 0, 0, date("m"), 0, date("Y")));
       $date   = $year . "-" . $month . "-01";
       $query  = PluginManageentitiesContractDay::queryOldContractDaywithInterventions($date);
-      $result = $DB->query($query);
+      $result = $DB->doQuery($query);
       $nb     = $DB->numrows($result);
       if ($nb && $output_type == search::HTML_OUTPUT) {
          echo "<div class = 'alert alert-important alert-warning d-flex'>" . __('Warning : There are supplementary interventions which depends on  a prestation with a earlier end date', 'manageentities') . "</div>";
