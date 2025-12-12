@@ -1,0 +1,174 @@
+# Fine-Tuned PHP-FPM Pool Configuration for GLPI
+# Optimized for: 8GB RAM, moderate concurrent load, balanced performance
+# Pool: www
+# Generated: December 9, 2025
+
+[www]
+
+# ═══════════════════════════════════════════════════════════════════════
+# PROCESS MANAGER CONFIGURATION (Fine-Tuned)
+# ═══════════════════════════════════════════════════════════════════════
+
+# Process manager type: dynamic (scales based on load)
+pm = dynamic
+
+# Maximum children: 40 workers
+# Calculation: 40 workers × ~70MB = 2.8GB
+# Leaves 2GB for MariaDB + 3GB system headroom
+pm.max_children = 40
+
+# Start servers: 8 workers on boot
+# Provides immediate capacity for startup traffic
+pm.start_servers = 8
+
+# Minimum spare servers: 4 idle workers
+# Keeps workers ready for sudden traffic bursts
+pm.min_spare_servers = 4
+
+# Maximum spare servers: 12 idle workers
+# Prevents excessive idle workers (30% of max)
+pm.max_spare_servers = 12
+
+# Maximum requests per worker: 1000
+# Recycles workers to prevent memory leaks
+# NEW in fine-tuning
+pm.max_requests = 1000
+
+# Process idle timeout: 30 seconds
+# Terminates idle workers after 30s
+pm.process_idle_timeout = 30s
+
+# ═══════════════════════════════════════════════════════════════════════
+# PERFORMANCE MONITORING (Fine-Tuned)
+# ═══════════════════════════════════════════════════════════════════════
+
+# Enable status page for monitoring
+pm.status_path = /fpm-status
+
+# Slow request logging (NEW in fine-tuning)
+# Logs PHP requests taking longer than 10 seconds
+request_slowlog_timeout = 10s
+slowlog = /var/log/php8.4-fpm-slow.log
+
+# Request termination timeout: 300 seconds
+# Kills hung requests after 5 minutes
+request_terminate_timeout = 300s
+
+# ═══════════════════════════════════════════════════════════════════════
+# USER AND GROUP
+# ═══════════════════════════════════════════════════════════════════════
+
+user = www-data
+group = www-data
+
+# ═══════════════════════════════════════════════════════════════════════
+# SOCKET CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════
+
+# Use Unix socket for better performance
+listen = /run/php/php8.4-fpm.sock
+
+# Socket permissions
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+
+# Listen backlog: 511 (higher for concurrent connections)
+listen.backlog = 511
+
+# ═══════════════════════════════════════════════════════════════════════
+# ENVIRONMENT VARIABLES
+# ═══════════════════════════════════════════════════════════════════════
+
+# Pass environment variables
+env[HOSTNAME] = $HOSTNAME
+env[PATH] = /usr/local/bin:/usr/bin:/bin
+env[TMP] = /tmp
+env[TMPDIR] = /tmp
+env[TEMP] = /tmp
+
+# ═══════════════════════════════════════════════════════════════════════
+# PHP SETTINGS (Pool-specific overrides)
+# ═══════════════════════════════════════════════════════════════════════
+
+# Memory limit: 512MB per worker
+php_admin_value[memory_limit] = 512M
+
+# Maximum execution time: 300 seconds (5 minutes)
+php_admin_value[max_execution_time] = 300
+
+# Input time: 120 seconds
+php_admin_value[max_input_time] = 120
+
+# Upload limits: 100MB
+php_admin_value[upload_max_filesize] = 100M
+php_admin_value[post_max_size] = 100M
+
+# Error logging
+php_admin_value[error_log] = /var/log/php8.4-fpm-error.log
+php_admin_flag[log_errors] = on
+
+# Display errors: off (production)
+php_admin_flag[display_errors] = off
+
+# ═══════════════════════════════════════════════════════════════════════
+# SECURITY SETTINGS
+# ═══════════════════════════════════════════════════════════════════════
+
+# Security limit: prevent /etc/passwd access
+php_admin_value[open_basedir] = /var/www:/tmp:/usr/share/php
+
+# Disable dangerous functions
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system,proc_open,popen
+
+# ═══════════════════════════════════════════════════════════════════════
+# SESSION CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════
+
+# Session save path
+php_value[session.save_handler] = files
+php_value[session.save_path] = /var/lib/php/sessions
+
+# Session garbage collection
+php_value[session.gc_maxlifetime] = 3600
+php_value[session.gc_probability] = 1
+php_value[session.gc_divisor] = 100
+
+# ═══════════════════════════════════════════════════════════════════════
+# FINE-TUNING NOTES
+# ═══════════════════════════════════════════════════════════════════════
+#
+# This configuration is optimized for:
+# - Current concurrent users: 5-10
+# - Target capacity: 35-40 concurrent users
+# - Memory per worker: ~70MB average
+# - Total PHP-FPM memory: 2.8GB maximum
+#
+# Key differences from standard tuning:
+# - Reduced max_children: 40 vs 50 (saves ~700MB)
+# - Worker recycling: 1000 requests (prevents memory leaks)
+# - Slow request logging: 10s threshold (monitoring)
+# - Balanced spare servers: 4-12 vs 5-15
+#
+# Memory calculation:
+# - 40 workers × 70MB = 2,800MB
+# - Peak memory usage: 2.8GB
+# - Average usage: 8 workers × 70MB = 560MB
+#
+# Performance expectations:
+# - Concurrent PHP requests: 40 maximum
+# - Response time: <200ms average
+# - Can handle traffic spikes up to 40 simultaneous users
+#
+# When to scale up:
+# - If pm.max_children regularly reached (check status)
+# - If slow requests increase significantly
+# - If page load times degrade
+# - If concurrent users regularly exceed 30
+#
+# Monitoring commands:
+# - systemctl status php8.4-fpm
+# - tail -f /var/log/php8.4-fpm-slow.log
+# - Watch "Processes active" vs "idle" in status
+#
+# ═══════════════════════════════════════════════════════════════════════

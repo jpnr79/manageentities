@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <name>GLPI-TacticalRmmPlugin</name>
+  <version>1.0.0</version>
+  <author>JP Ros</author>
+  <license>GPLv2+</license>
+  <homepage>https://github.com/ericferon/GLPI-TacticalRmmPlugin</homepage>
+  <min_glpi_version>11.0.0</min_glpi_version>
+  <max_glpi_version>11.999.999</max_glpi_version>
+  <short_description>Integration with TacticalRMM</short_description>
+  <long_description>Provides integration between GLPI and TacticalRMM for asset management.</long_description>
+</plugin>

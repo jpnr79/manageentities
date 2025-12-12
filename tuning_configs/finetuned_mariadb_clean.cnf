@@ -1,0 +1,165 @@
+# Fine-Tuned MariaDB Configuration for GLPI
+# Optimized for: 8GB RAM, 56MB database, 608 tables, 10 peak connections
+# Configuration: Balanced for current workload with room to grow
+# Generated: December 9, 2025
+
+[mysqld]
+
+# =======================================================================
+# CONNECTION SETTINGS
+# =======================================================================
+
+# Max connections: 100 (current peak: 10, provides 10x headroom)
+max_connections = 100
+
+# Connection timeout
+wait_timeout = 600
+interactive_timeout = 600
+
+# =======================================================================
+# INNODB BUFFER POOL (Most Important Setting)
+# =======================================================================
+
+# Buffer pool: 3GB (50x your 56MB database size)
+# Provides excellent caching while leaving 5GB for other services
+innodb_buffer_pool_size = 3G
+
+# Buffer pool instances (1 per GB)
+innodb_buffer_pool_instances = 3
+
+# Flush method for better I/O
+innodb_flush_method = O_DIRECT
+
+# Don't flush on every commit (better performance)
+innodb_flush_log_at_trx_commit = 2
+
+# =======================================================================
+# INNODB LOG FILES
+# =======================================================================
+
+# Log file size: 128MB (sufficient for 56MB DB)
+innodb_log_file_size = 128M
+
+# Log buffer: 16MB
+innodb_log_buffer_size = 16M
+
+# =======================================================================
+# INNODB I/O SETTINGS
+# =======================================================================
+
+# Use all 6 CPU cores for I/O
+innodb_read_io_threads = 6
+innodb_write_io_threads = 6
+
+# I/O capacity (standard SSD)
+innodb_io_capacity = 1000
+innodb_io_capacity_max = 2000
+
+# =======================================================================
+# TABLE AND CACHE SETTINGS
+# =======================================================================
+
+# Table cache: 4000 (608 tables × 6 connections + overhead)
+table_open_cache = 4000
+table_definition_cache = 2000
+
+# Temporary tables
+tmp_table_size = 64M
+max_heap_table_size = 64M
+
+# =======================================================================
+# QUERY CACHE (Disabled in MariaDB 10.6+, but keeping for compatibility)
+# =======================================================================
+
+# Query cache is deprecated, rely on InnoDB buffer pool instead
+
+# =======================================================================
+# BUFFER SIZES
+# =======================================================================
+
+# Sort buffer (per connection)
+sort_buffer_size = 2M
+
+# Read buffer
+read_buffer_size = 1M
+read_rnd_buffer_size = 2M
+
+# Join buffer
+join_buffer_size = 2M
+
+# =======================================================================
+# THREAD CACHE
+# =======================================================================
+
+# Thread cache (max_connections / 3)
+thread_cache_size = 32
+
+# =======================================================================
+# SLOW QUERY LOG (Fine-tuning addition)
+# =======================================================================
+
+# Enable slow query logging for monitoring
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/ubuntu-200-slow.log
+long_query_time = 2
+
+# Log queries not using indexes
+log_queries_not_using_indexes = 0
+
+# =======================================================================
+# GENERAL LOG (Disabled by default)
+# =======================================================================
+
+# Only enable for debugging (high I/O impact)
+general_log = 0
+
+# =======================================================================
+# BINARY LOG (For replication/backups)
+# =======================================================================
+
+# Keep 7 days of binary logs
+expire_logs_days = 7
+
+# =======================================================================
+# CHARACTER SET
+# =======================================================================
+
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# =======================================================================
+# PERFORMANCE SCHEMA (Minimal overhead)
+# =======================================================================
+
+performance_schema = ON
+performance_schema_max_table_instances = 4000
+
+# =======================================================================
+# FINE-TUNING NOTES:
+# =======================================================================
+#
+# This configuration is optimized for:
+# - Small to medium database (current: 56MB)
+# - Low to medium concurrent connections (current peak: 10)
+# - 8GB RAM with room for other services
+# - 608 tables (GLPI + plugins)
+#
+# Memory allocation breakdown:
+# - InnoDB buffer pool: 3GB (main memory consumer)
+# - Other InnoDB buffers: ~256MB
+# - Per-connection buffers: ~8MB × 100 connections = 800MB potential
+# - Total MariaDB memory: ~4GB maximum
+#
+# Advantages over standard tuning:
+# - Lower memory footprint (~1GB saved)
+# - Better balanced for actual workload
+# - Slow query logging enabled for monitoring
+# - Room to grow as database increases
+#
+# When to upgrade to standard tuning:
+# - Database grows beyond 500MB
+# - Regular concurrent connections exceed 50
+# - Page load times increase
+# - Buffer pool hit ratio drops below 95%
+#
+# =======================================================================
