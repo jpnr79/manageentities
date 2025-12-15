@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \$parser of method Composer\\InstalledVersions\:\:satisfies\(\) has invalid type Composer\\Semver\\VersionParser\.$#'
+			identifier: class.notFound
+			count: 1
+			path: composer/InstalledVersions.php

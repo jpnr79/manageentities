@@ -1,4 +1,27 @@
 <?php
+if (PHP_SAPI !== 'cli') {
+    return;
+}
+// Core item class stubs for GLPI plugins
+if (!class_exists('Computer')) { class Computer extends CommonDBTM { public static function getTypeName($n = 0) { return 'Computer'; } } }
+if (!class_exists('Monitor')) { class Monitor extends CommonDBTM { public static function getTypeName($n = 0) { return 'Monitor'; } } }
+if (!class_exists('Phone')) { class Phone extends CommonDBTM { public static function getTypeName($n = 0) { return 'Phone'; } } }
+if (!class_exists('Printer')) { class Printer extends CommonDBTM { public static function getTypeName($n = 0) { return 'Printer'; } } }
+if (!class_exists('Item_Problem')) { class Item_Problem extends CommonDBTM { public static function getTypeName($n = 0) { return 'Item_Problem'; } } }
+if (!class_exists('Item_Ticket')) { class Item_Ticket extends CommonDBTM { public static function getTypeName($n = 0) { return 'Item_Ticket'; } } }
+if (!class_exists('NetworkEquipment')) { class NetworkEquipment extends CommonDBTM { public static function getTypeName($n = 0) { return 'NetworkEquipment'; } } }
+if (!class_exists('Peripheral')) { class Peripheral extends CommonDBTM { public static function getTypeName($n = 0) { return 'Peripheral'; } } }
+if (!class_exists('ConsumableItem')) { class ConsumableItem extends CommonDBTM { public static function getTypeName($n = 0) { return 'ConsumableItem'; } } }
+if (!class_exists('ComputerType')) { class ComputerType extends CommonDBTM { public static function getTypeName($n = 0) { return 'ComputerType'; } } }
+if (!class_exists('PhoneType')) { class PhoneType extends CommonDBTM { public static function getTypeName($n = 0) { return 'PhoneType'; } } }
+if (!class_exists('Auth')) { class Auth { public static function getMethodName(...$a) { return ''; } } }
+if (!class_exists('Log')) { class Log { const HISTORY_LOG_SIMPLE_MESSAGE = 1; } }
+if (!class_exists('Ticket')) { class Ticket extends CommonDBTM { const DEMAND_TYPE = 1; } }
+if (!class_exists('Alert')) { class Alert extends CommonDBTM { const END = 1; } }
+<?php
+if (PHP_SAPI !== 'cli') {
+    return;
+}
 // Expanded development stubs for static analysis (dporegister-focused).
 // These are permissive no-op implementations used only to reduce analyzer noise.
 
@@ -20,18 +43,21 @@ if (!function_exists('countElementsInTable')) { function countElementsInTable($t
 
 // Lightweight core classes
 if (!class_exists('CommonGLPI')) {
-    class CommonGLPI { public $fields = []; public function getID() { return $this->fields['id'] ?? 0; } public static function getTypeName($n = 0) { return ''; } public static function getTabNameForItem(\CommonGLPI $item, int $withtemplate = 0): array|string { return []; } }
+    class CommonGLPI { public $fields = []; public function getID() { return $this->fields['id'] ?? 0; } public static function getTypeName($n = 0) { return ''; } public function getTabNameForItem(\CommonGLPI $item, $withtemplate = 0): array|string { return []; } public static function displayTabContentForItem(\CommonGLPI $item, $tabnum = 1, $withtemplate = 0) { return true; } }
 }
 
 if (!class_exists('CommonDBTM')) {
     class CommonDBTM extends CommonGLPI {
         public $fields = [];
         public $input = [];
+        public $updates = [];
+        public $oldvalues = [];
         public function getFromDB($id = 0) { return false; }
         public function getFromDBByCrit(array $crit) { return false; }
         public function getEmpty() { $this->fields = []; }
         public function add(array $input, $history = null): bool { return true; }
         public function update(array $input, $history = null, $options = null): bool { return true; }
+        public function find($criteria = null, $order = null, $limit = null) { return []; }
         public static function getTable() { return ''; }
         public static function getForeignKeyField() { return 'id'; }
         public static function dropdown(...$a) { return ''; }
@@ -41,10 +67,10 @@ if (!class_exists('CommonDBTM')) {
         public function showMassiveActionsSubForm($ma = null): ?bool { return true; }
         public static function showMassiveActionsSubFormStatic($ma = null) { return true; }
         public function __construct(...$a) { }
-        public function __destruct(...$a) { }
+        public function __destruct() { }
         public static function processMassiveActionsForOneItemtype(\MassiveAction $ma, \CommonDBTM $item, array $ids): void { return; }
-        public static function getSpecificValueToDisplay(...$a) { return ''; }
-        public static function getSpecificValueToSelect(...$a) { return ''; }
+        public static function getSpecificValueToDisplay($field, $values, array $options = []) { return ''; }
+        public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) { return ''; }
         public function __call($name, $args) { return null; }
         public static function __callStatic($name, $args) { return null; }
     }
@@ -65,7 +91,7 @@ if (!class_exists('CommonDBRelation')) {
     }
 }
 
-if (!class_exists('MassiveAction')) { class MassiveAction { const CLASS_ACTION_SEPARATOR = '::'; const ACTION_OK = 1; const ACTION_KO = 0; public function getItemtype($a=false){return ''; } public function getAction(){return ''; } public function getInput(){return []; } public function itemDone($type,$key,$status){} public function addMessage($m){} } }
+if (!class_exists('MassiveAction')) { class MassiveAction { const CLASS_ACTION_SEPARATOR = '::'; const ACTION_OK = 1; const ACTION_KO = 0; const ACTION_NORIGHT = 2; public function getItemtype($a=false){return ''; } public function getAction(){return ''; } public function getInput(){return []; } public function itemDone($type,$key,$status){} public function addMessage($m){} } }
 
 // Session, Html, Ajax, Toolbox minimal helpers used in many plugins
 /**
@@ -108,6 +134,10 @@ if (!class_exists('Session')) {
         public static function checkRight(...$a) { return true; }
         public static function getLoginUserID() { return 1; }
         public static function getNewIDORToken() { return null; }
+        public static function initNavigateListItems() { return; }
+        public static function addToNavigateListItems(...$a) { return; }
+        public static function isMultiEntitiesMode(...$a) { return false; }
+        public static function haveTranslations(...$a) { return false; }
     }
 }
 
@@ -127,24 +157,7 @@ if (!class_exists('Session')) {
  * @method static string submit($label, $opts = [])
  * @method static void closeForm()
  */
-if (!class_exists('Html')) {
-    /**
-     * Html helper stubs used by plugins (attached to class for PHPStan)
-     *
-     * @method static void header_nocache()
-     * @method static string header(string $title = '', string $self = '', string $tab = '', $plugin = '', $extras = '')
-     * @method static string footer()
-     * @method static string helpHeader($t = '')
-     * @method static string helpFooter()
-     * @method static string back()
-     * @method static string cleanId(string $id)
-     * @method static string jsAjaxDropdown(...$a)
-     * @method static string convDateTime($t = null)
-     * @method static string hidden($name, $opts = [])
-     * @method static string submit($label, $opts = [])
-     * @method static void closeForm()
-     */
-    class Html {
+class Html {
         public static function back() { return ''; }
         public static function footer() { return ''; }
         public static function header_nocache() { return ''; }
@@ -168,6 +181,11 @@ if (!class_exists('Html')) {
         public static function header($title = '', $self = '', $tab = '', $plugin = '', $extras = '') { return ''; }
         public static function ajaxFooter() { return ''; }
         public static function convDateTime($t = null) { return is_scalar($t) ? (string)$t : ''; }
+        public static function convDate($t = null) { return is_scalar($t) ? (string)$t : ''; }
+        public static function showDateField(...$a) { return ''; }
+        public static function textarea(...$a) { return ''; }
+        public static function formatNumber(...$a) { return ''; }
+        public static function computeGenericDateTimeSearch(...$a) { return ''; }
         public static function hidden($name, $opts = []) { return ''; }
         public static function submit($label, $opts = []) { return ''; }
         public static function displayRightError($s = '') { return ''; }
@@ -181,40 +199,37 @@ if (!class_exists('Html')) {
         public static function css($url = '') { return ''; }
         public static function script($s = '') { return ''; }
         public static function showSimpleForm(...$a) { return ''; }
+        public static function createProgressBar(...$a) { return ''; }
+        public static function changeProgressBarMessage(...$a) { return ''; }
+        public static function timestampToString($t = null) { return is_scalar($t) ? (string)$t : ''; }
+        public static function jsGetElementbyID(...$a) { return ''; }
+        public static function showCheckbox(...$a) { return ''; }
+        public static function clean($s) { return $s; }
+        public static function showToolTip(...$a) { return ''; }
+        public static function displayMessageAfterRedirect($m = '', $type = 'info') { return; }
+        public static function file(...$a) { return ''; }
+        public static function printPager(...$a) { return ''; }
+        public static function printAjaxPager(...$a) { return ''; }
     }
-}
 
-// Enrich Html with many UI helpers used by plugins
-if (!class_exists('Html')) {
-    class Html {
-        public static function displayRightError($s) { echo $s; }
-        public static function displayTitle($s) { echo $s; }
-        public static function autocompletionTextField(...$a) { return ''; }
-        public static function input($name, $opts = []) { return ''; }
-        public static function link($label, $url = '') { return "<a href='$url'>$label</a>"; }
-        public static function css($url) { return ''; }
-        public static function script($s) { return ''; }
-        public static function showSimpleForm(...$a) { return ''; }
-        public static function showMassiveActionCheckBox(...$a) { return ''; }
-        public static function getCheckAllAsCheckbox($id = '') { return ''; }
-        public static function resume_text($t, $len = 100) { return $t; }
-        public static function jsShow($s) { return ""; }
-        public static function nullHeader($t, $u = '') { return ''; }
-    }
-}
+if (!class_exists('Ajax')) { class Ajax { public static function updateItem(...$a) { return null; } public static function updateItemJsCode(...$a) {} public static function updateItemOnSelectEvent(...$a) {} public static function updateItemOnInputTextEvent(...$a) {} public static function createIframeModalWindow(...$a) {} public static function updateItemOnEvent(...$a) {} } }
 
-if (!class_exists('Ajax')) { class Ajax { public static function updateItemJsCode(...$a) {} public static function updateItemOnSelectEvent(...$a) {} public static function createIframeModalWindow(...$a) {} public static function updateItemOnEvent(...$a) {} } }
-
-if (!class_exists('Toolbox')) { class Toolbox { public static function getHtmlToDisplay($s) { return $s; } public static function getItemTypeFormURL($c) { return ''; } } }
+if (!class_exists('Toolbox')) { class Toolbox { public static function getHtmlToDisplay($s) { return $s; } public static function getItemTypeFormURL($c) { return ''; } public static function stripslashes_deep($v) { return $v; } public static function strtolower($s) { return is_string($s) ? strtolower($s) : $s; } public static function unclean_cross_side_scripting_deep(...$a) { return false; } } }
 
 if (!class_exists('Dropdown')) {
     class Dropdown {
         public const EMPTY_VALUE = '';
-        public static function showFromArray($a) { return ''; }
+        public static function showFromArray($name, $values, $options = []) { return ''; }
         public static function showYesNo() { return ''; }
+        public static function getYesNo() { return []; }
         public static function getDropdownName($table, $id) { return ''; }
         public static function showSelectItemFromItemtypes(...$a) { return ''; }
         public static function addNewCondition(...$a) { return; }
+        public static function show(...$a) { return ''; }
+        public static function showItemTypes(...$a) { return ''; }
+        public static function getValueWithUnit(...$a) { return ''; }
+        public static function getGlobalSwitch(...$a) { return ''; }
+        public static function showGlobalSwitch(...$a) { return ''; }
     }
 }
 
@@ -226,7 +241,32 @@ if (!function_exists('getAllDataFromTable')) { function getAllDataFromTable($tab
 if (!function_exists('unclean_cross_side_scripting_deep')) { function unclean_cross_side_scripting_deep(...$a) { return false; } }
 
 // Simple Rule class constants used by some plugins
-if (!class_exists('Rule')) { class Rule { const PATTERN_END = 1; const REGEX_MATCH = 2; const REGEX_NOT_MATCH = 3; const PATTERN_EXISTS = 4; const PATTERN_DOES_NOT_EXISTS = 5; } }
+if (!class_exists('Rule')) { 
+    class Rule {
+        const PATTERN_END = 1;
+        const REGEX_MATCH = 2;
+        const REGEX_NOT_MATCH = 3;
+        const PATTERN_EXISTS = 4;
+        const PATTERN_DOES_NOT_EXISTS = 5;
+        const PATTERN_IS = 6;
+        const PATTERN_IS_NOT = 7;
+        const PATTERN_CONTAIN = 8;
+        const PATTERN_NOT_CONTAIN = 9;
+        const PATTERN_BEGIN = 10;
+        const PATTERN_FIND = 11;
+        const PATTERN_IS_EMPTY = 12;
+        const PATTERN_UNDER = 13;
+        const PATTERN_NOT_UNDER = 14;
+        const RULE_WILDCARD = 99;
+
+        public function getSpecificMassiveActions($checkitem = null) { return []; }
+        public static function getTypeName($n = 0) { return ''; }
+        public static function showMassiveActionsSubForm(MassiveAction $ma) { return; }
+        public static function getSpecificValueToDisplay($field, $values, array $options = []) { return ''; }
+        public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) { return ''; }
+        public static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) { return; }
+    }
+}
 
 if (!class_exists('Plugin')) {
     class Plugin {
@@ -235,11 +275,22 @@ if (!class_exists('Plugin')) {
         public static function registerClass($c, $o = []) { return true; }
         public static function load() { return true; }
         public static function isPluginActive($p = '') { return true; }
+        public static function isActivated($p = '') { return true; }
+        public static function isInstalled($p = '') { return true; }
         public static function messageIncompatible($m) { return; }
+        public static function migrateItemType(...$a) { return; }
+        public static function doHook(...$a) { return; }
+        public static function doOneHook(...$a) { return; }
+        public static function loadLang($plugin = '', $lang = '') { return []; }
     }
 }
 
-if (!class_exists('Event')) { class Event { public static function log(...$a) {} } }
+if (!class_exists('Config')) {
+    class Config {
+        public static function get($key, $default = null) { return $default; }
+        public static function set($key, $value) { return true; }
+    }
+}
 
 if (!class_exists('Profile')) { class Profile { public static function createTabEntry(...$a) { return $a[0] ?? ''; } } }
 if (!class_exists('ProfileRight')) { class ProfileRight { public static function addProfileRights($a) { return true; } public static function getProfileRights($profile = null) { return []; } } }
@@ -287,9 +338,6 @@ if (!class_exists('PluginDporegisterSecurityMesure')) { class PluginDporegisterS
 if (!class_exists('User')) { class User extends CommonDBTM { public static function getForeignKeyField() { return 'users_id'; } public static function dropdown(...$a) { return ''; } } }
 
 if (!class_exists('Software')) { class Software extends CommonDBTM { public static function getTable() { return ''; } public static function dropdown(...$args) { return ''; } public static function getForeignKeyField() { return 'software_id'; } public static function getFormURLWithID($id) { return ''; } public static function canView() { return true; } } }
-// Alias HTML to Html for plugins using the uppercase variant
-if (!class_exists('HTML') && class_exists('Html')) { class HTML extends Html {} }
-
 // Ensure Software has canView helper
 if (!class_exists('Software')) { class Software extends CommonDBTM { public static function canView() { return true; } } }
 if (!class_exists('SoftwareCategory')) { class SoftwareCategory extends CommonDBTM { public static function getTable() { return 'glpi_softwarecategories'; } } }
@@ -297,12 +345,331 @@ if (!class_exists('Entity')) { class Entity extends CommonDBTM { public static f
 if (!class_exists('Manufacturer')) { class Manufacturer extends CommonDBTM { public static function dropdown(...$a) { return ''; } } }
 if (!class_exists('Supplier')) { class Supplier extends CommonDBTM { public static function getForeignKeyField() { return 'suppliers_id'; } public static function dropdown(...$a) { return ''; } } }
 
-if (!class_exists('Notification')) { class Notification { const USER_TYPE = 1; const ASSIGN_TECH = 2; const SUPERVISOR_ASSIGN_GROUP = 3; public static function getNotificationsByEventAndType(...$args) { return []; } } }
+if (!class_exists('Notification')) { class Notification { const USER_TYPE = 1; const ASSIGN_TECH = 2; const SUPERVISOR_ASSIGN_GROUP = 3; const SUPERVISOR_GROUP_TYPE = 4; public static function getNotificationsByEventAndType(...$args) { return []; } } }
+
+if (!class_exists('NotificationTemplate')) { class NotificationTemplate extends CommonDBTM {} }
+if (!class_exists('NotificationTemplateTranslation')) { class NotificationTemplateTranslation extends CommonDBTM {} }
+
+if (!class_exists('StatecheckRuleRight')) { class StatecheckRuleRight extends CommonDBTM {} }
+if (!class_exists('StatecheckRuleImportEntity')) { class StatecheckRuleImportEntity extends CommonDBTM {} }
+if (!class_exists('StatecheckRuleMailCollector')) { class StatecheckRuleMailCollector extends CommonDBTM {} }
+
+if (!class_exists('DBmysql')) {
+    class DBmysql {
+        public function query($sql) { return null; }
+        public function doQuery($sql) { return null; }
+        public function runFile($file) { return true; }
+        public function request($criteria) { return []; }
+        public function fetchAssoc($result) { return []; }
+        public function fetchArray($result) { return []; }
+        public function fetch_array($result) { return $this->fetchAssoc($result); }
+        public function escape($string) { return (string)$string; }
+        public function getLastInsertId() { return 0; }
+        public function numRows($result) { return 0; }
+        public function TableExists($table) { return true; }
+        public function FieldExists($table, $field) { return true; }
+        public function dropTable($table, $force = false) { return true; }
+        public static function quoteName($s) { return (string)$s; }
+        // Ensure query() always exists for static analysis
+        public static function static_query($sql) { return null; }
+    }
+}
+if (!isset($DB)) {
+    $DB = new DBmysql();
+}
+if (!class_exists('DB')) {
+    class DB extends DBmysql {}
+}
+
+if (!class_exists('Ajax')) {
+    class Ajax {
+        public static function updateItem(...$a) { return null; }
+        public static function updateItemJsCode(...$a) { }
+        public static function updateItemOnSelectEvent(...$a) { }
+    }
+}
+
+if (!class_exists('Toolbox')) {
+    class Toolbox {
+        public static function strtolower($s) { return is_string($s) ? strtolower($s) : $s; }
+        public static function unclean_cross_side_scripting_deep(...$a) { return false; }
+        public static function stripslashes_deep($v) { return $v; }
+        public static function logDebug(...$a) { return; }
+        public static function cleanInteger(...$a) { return 0; }
+        public static function return_bytes_from_ini_vars(...$a) { return 0; }
+        public static function manageBeginAndEndPlanDates(...$a) { return; }
+        public static function getTimestampTimeUnits(...$a) { return []; }
+        public static function append_params($url, $params = []) { return $url; }
+    }
+}
+
+if (!class_exists('Dropdown')) {
+    class Dropdown {
+        public static function show(...$a) { return ''; }
+        public static function getYesNo() { return []; }
+        public static function getValueWithUnit() { return ''; }
+        public static function showItemTypes() { return ''; }
+        public static function showTimeStamp(...$a) { return ''; }
+    }
+}
+
+if (!function_exists('getItemForItemtype')) { function getItemForItemtype($itemtype) { return null; } }
+if (!function_exists('getTableForItemType')) { function getTableForItemType($itemtype) { return ''; } }
+
+// Add missing Html helpers referenced by multiple plugins
+if (class_exists('Html')) {
+    if (!method_exists('Html', 'createProgressBar')) { Html::class; }
+}
+if (!class_exists('Ticket')) {
+    class Ticket extends CommonDBTM {
+        public static function getStatus($s = null) { return ''; }
+        public static function getPriorityName($id = null) { return ''; }
+        public static function getUrgencyName($id = null) { return ''; }
+        public static function getImpactName($id = null) { return ''; }
+        public static function getTicketTypeName($id = null) { return ''; }
+        public static function getAllTypesForHelpdesk() { return []; }
+        public static function dropdownUrgency() { return []; }
+        public static function dropdownImpact() { return []; }
+        public static function dropdownPriority() { return []; }
+        public static function dropdownStatus() { return []; }
+        public static function dropdownType() { return []; }
+    }
+}
+
+// Plugin helpers
+if (class_exists('Plugin')) {
+    if (!method_exists('Plugin', 'migrateItemType')) {
+        class_alias('Plugin', 'DevPluginShim');
+        DevPluginShim::class;
+    }
+}
+if (!function_exists('getTableForItemType')) { function getTableForItemType($it) { return ''; } }
+
+// Generic statecheck helper classes
+if (!class_exists('StatecheckRule')) { class StatecheckRule extends CommonDBTM {} }
+if (!class_exists('StatecheckRuleCollection')) { class StatecheckRuleCollection {} }
+if (!class_exists('StatecheckRuleRightCollection')) { class StatecheckRuleRightCollection {} }
+if (!class_exists('StatecheckRuleImportEntityCollection')) { class StatecheckRuleImportEntityCollection {} }
+if (!class_exists('StatecheckRuleMailCollectorCollection')) { class StatecheckRuleMailCollectorCollection {} }
+if (!class_exists('StatecheckRuleTicket')) { class StatecheckRuleTicket extends CommonDBTM {} }
+if (!class_exists('SlaLevel')) { class SlaLevel extends CommonDBTM {} }
+
+if (!function_exists('_e')) { function _e(...$a) { return; } }
+if (!function_exists('checkRight')) { function checkRight(...$a) { return true; } }
+if (!function_exists('glpi_header')) { function glpi_header(...$a) { return; } }
+if (!function_exists('getItemTypeForTable')) { function getItemTypeForTable(...$a) { return ''; } }
+if (!function_exists('getTableNameForForeignKeyField')) { function getTableNameForForeignKeyField(...$a) { return ''; } }
+if (!function_exists('getForeignKeyFieldForTable')) { function getForeignKeyFieldForTable(...$a) { return ''; } }
+if (!function_exists('getAllDatasFromTable')) { function getAllDatasFromTable(...$a) { return []; } }
+if (!function_exists('getSonsOf')) { function getSonsOf(...$a) { return []; } }
+
+// Statecheck-related class placeholders
+if (!class_exists('Rule')) {
+    class Rule {
+        const PATTERN_IS = 1;
+        const PATTERN_IS_NOT = 2;
+        const PATTERN_CONTAIN = 3;
+        const PATTERN_NOT_CONTAIN = 4;
+        const PATTERN_BEGIN = 5;
+        const PATTERN_FIND = 6;
+        const PATTERN_IS_EMPTY = 7;
+        const PATTERN_UNDER = 8;
+        const PATTERN_NOT_UNDER = 9;
+        public static function getSpecificMassiveActions() { return []; }
+        public static function showMassiveActionsSubForm(...$a) { return; }
+        public static function getSpecificValueToDisplay($field = null, $values = null, ...$options) { return ''; }
+        public static function getSpecificValueToSelect($field = null, $values = null, ...$options) { return ''; }
+    }
+}
+
+if (!class_exists('RuleCriteria')) { class RuleCriteria extends CommonDBTM { public static $itemtype = ''; public $fields = []; } }
+
+if (!class_exists('Group')) { class Group extends CommonDBTM { public static function dropdown(...$a) { return ''; } } }
+
+if (!class_exists('DB') && class_exists('DBmysql')) { class DB extends DBmysql {} }
+
+if (!class_exists('PluginStatecheckRule')) {
+    /**
+     * @method static string getType()
+     * @method static bool canUpdate()
+     * @method static bool canEdit()
+     * @method static string getTypeName(int $n = 0)
+     * @method static string getSearchURL()
+     * @method static string getFormURLWithID(int $id = 0)
+     * @method static mixed getRuleObjectByID(int $id)
+     * @method bool add(array $input, $history = null)
+     * @method static array getSpecificMassiveActions()
+     * @method static bool isNewID($id = null)
+     * @method static bool check($input = [])
+     * @method static bool checkGlobal($input = [])
+     * @method static string showFormHeader(...$a)
+     * @method static string showFormButtons(...$a)
+     * @method mixed getFromDB(int $id = 0)
+     * @method mixed getFromDBByCrit(array $crit = [])
+     * @method static int getNextRanking()
+     * @method static string getLink(int $id = 0)
+     * @method static mixed createTabEntry(...$a)
+     * @method static mixed getSpecificValueToDisplay($field = null, $values = null, ...$options)
+     * @method static mixed getSpecificValueToSelect($field = null, $values = null, ...$options)
+    * @method void process(...$a)
+    * @method void updateOnlyCriteria(...$a)
+    * @method void testCriterias(...$a)
+     */
+    class PluginStatecheckRule extends CommonDBTM {
+        public $fields = [];
+        public static $itemtype = '';
+        public static function getType() { return static::class; }
+        public static function canUpdate() { return true; }
+        public static function canEdit() { return true; }
+        public static function getTypeName($n = 0) { return ''; }
+        public static function getSearchURL() { return ''; }
+        public static function getFormURLWithID($id = 0) { return ''; }
+        public static function getRuleObjectByID($id) { return null; }
+        public function add(array $input, $history = null): bool { return true; }
+        public function getEmpty() { return new static(); }
+        // Permissive method stubs used by statecheck implementation
+        public function getSpecificMassiveActions($checkitem = null) { return []; }
+        public static function isNewID($id = null) { return false; }
+        public static function check($input = []) { return true; }
+        public static function checkGlobal($input = []) { return true; }
+        public static function showFormHeader(...$a) { return ''; }
+        public static function showFormButtons(...$a) { return ''; }
+        public function getFromDB($id = 0) { return new static(); }
+        public function getFromDBByCrit($crit = []) { return new static(); }
+        public static function getNextRanking() { return 0; }
+        public static function getLink($id = 0) { return ''; }
+        public static function createTabEntry(...$a) { return $a[0] ?? ''; }
+    }
+}
+
+if (!class_exists('PluginStatecheckRuleAction')) {
+    class PluginStatecheckRuleAction extends CommonDBTM { public static $itemtype = ''; public $fields = []; public function getTabNameForItem($item, $with = null): array|string { return []; } public static function getSpecificValueToDisplay($field, $values, array $options = []) { return ''; } public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) { return ''; } }
+}
+
+// Provide a lightweight RuleAction and CommonDBChild used by statecheck classes
+if (!class_exists('RuleAction')) {
+    class RuleAction extends CommonDBTM {
+        public static $itemtype = '';
+        public $fields = [];
+        public function getForbiddenStandardMassiveAction() { return []; }
+    }
+}
+
+if (!class_exists('CommonDBChild')) {
+    class CommonDBChild extends CommonDBTM { public static $itemtype = ''; public $fields = []; public function getTabNameForItem(CommonGLPI $item, $with = null): array|string { return []; } }
+}
+
+if (!class_exists('PluginStatecheckRuleCriteria')) {
+    class PluginStatecheckRuleCriteria extends CommonDBTM { public static $itemtype = ''; public $fields = []; }
+}
+
+if (!class_exists('PluginStatecheckNotificationTargetRule')) {
+    /**
+     * @property-read mixed $raiseevent
+     * @property-read mixed $data
+     * @property-read mixed $obj
+     * @property-read mixed $tag_descriptions
+     * @method static void addTarget(...$a)
+     * @method static string getDistinctUserSql()
+     * @method static string getJoinProfileSql()
+     * @method static array addToAddressesList(...$a)
+     * @method static array getAllEvents()
+     */
+    /**
+     * @property mixed $raiseevent
+     * @property mixed $data
+     * @property mixed $obj
+     * @property mixed $tag_descriptions
+     */
+    class PluginStatecheckNotificationTargetRule {
+        // static access retained for backward compatibility
+        public static $raiseevent;
+        public static $data;
+        public static $obj;
+        public static $tag_descriptions;
+
+        // Static variants
+        public static function addTarget(...$a) { }
+        public static function getDistinctUserSql() { return ''; }
+        public static function getJoinProfileSql() { return ''; }
+        public static function addToAddressesList(...$a) { return []; }
+        public static function getAllEvents() { return []; }
+        public static function addTagToList(...$a) { return []; }
+
+        // Instance wrappers calling static implementations for analyzer/runtime
+        public function addTargetInstance(...$a) { return static::addTarget(...$a); }
+        public function getDistinctUserSqlInstance() { return static::getDistinctUserSql(); }
+        public function getJoinProfileSqlInstance() { return static::getJoinProfileSql(); }
+        public function addToAddressesListInstance(...$a) { return static::addToAddressesList(...$a); }
+        public function getAllEventsInstance() { return static::getAllEvents(); }
+        public function addTagToListInstance(...$a) { return static::addTagToList(...$a); }
+    }
+}
+
+// Ensure Notification constants used by statecheck exist
+if (!class_exists('Notification')) {
+    class Notification { const USER_TYPE = 1; const ASSIGN_TECH = 2; const SUPERVISOR_ASSIGN_GROUP = 3; const SUPERVISOR_GROUP_TYPE = 4; public static function getNotificationsByEventAndType(...$args) { return []; } }
+}
+
+if (!class_exists('Session')) {
+    class Session { public static function initNavigateListItems() {} public static function addToNavigateListItems(...$a) {} }
+}
+
 if (!class_exists('NotificationTarget')) { class NotificationTarget { const TAG_LANGUAGE = 'language'; } }
 if (!class_exists('NotificationEvent')) { class NotificationEvent { public static function raiseEvent(...$args) { return; } } }
 // Small missing classes referenced by plugins
 if (!class_exists('Group_User')) { class Group_User extends CommonDBTM { public static function getUserGroups($user) { return []; } } }
 if (!class_exists('Alert')) { class Alert extends CommonDBTM {} }
+
+// Additional permissive stubs to reduce PHPStan symbol noise
+if (!class_exists('CronTask')) {
+    class CronTask {
+        const STATE_DISABLE = 0;
+        const STATE_ENABLE = 1;
+        const STATE_DELETE = 2;
+    }
+}
+if (!class_exists('AuthLDAP')) { class AuthLDAP {} }
+if (!class_exists('GLPIKey')) { class GLPIKey {} }
+
+if (!class_exists('Glpi\\DBAL\\QueryFunction')) { eval('namespace Glpi\\DBAL { class QueryFunction { public static function now() { return date("Y-m-d H:i:s"); } } }'); }
+
+if (!class_exists('PluginPdfCommon')) {
+    class PluginPdfCommon { public static function defineAllTabsPDF(...$a) { return []; } }
+}
+
+if (!class_exists('PluginDatainjectionCommonInjectionLib')) {
+    class PluginDatainjectionCommonInjectionLib { public static function addToSearchOptions(...$a) { return []; } }
+}
+
+if (!class_exists('Search')) {
+    class Search {
+        public static function prepareDatasForSearch(...$a) { return []; }
+        public static function constructSQL(...$a) { return ''; }
+        public static function constructData(...$a) { return []; }
+        public static function displayData(...$a) { return ''; }
+        public static function getOptions(...$a) { return []; }
+        public static function addSelect(...$a) { return ''; }
+        public static function addDefaultJoin(...$a) { return ''; }
+        public static function addDefaultWhere(...$a) { return ''; }
+        public static function addHaving(...$a) { return ''; }
+        public static function addWhere(...$a) { return ''; }
+        public static function addOrderBy(...$a) { return ''; }
+        public static function addMetaLeftJoin(...$a) { return ''; }
+        public static function computeComplexJoinID(...$a) { return 0; }
+        public static function showError(...$a) { return ''; }
+        public static function makeTextSearch(...$a) { return ''; }
+    }
+}
+
+if (class_exists('Ajax') && !method_exists('Ajax','commonDropdownUpdateItem')) {
+    if (!function_exists('glpi_internal_add_ajax_commonDropdownUpdateItem')) {
+        function glpi_internal_add_ajax_commonDropdownUpdateItem() { return; }
+    }
+}
+
+if (!class_exists('GlpiPlugin\\Badges\\Badge')) { eval('namespace GlpiPlugin\\Badges { class Badge { public static function dropdown(...$a) { return ""; } public static function getTypeName($n = 0) { return ""; } } }'); }
+if (!class_exists('GlpiPlugin\\Metademands\\Field')) { eval('namespace GlpiPlugin\\Metademands { class Field { public static function _unserialize(...$a) { return null; } } class FieldParameter { public static function _serialize(...$a) { return null; } } class Config { public static function getInstance() { return new static(); } } class Metademand { public static function getTypeName($n = 0) { return ""; } } }'); }
 if (!class_exists('DisplayPreference')) { class DisplayPreference extends CommonDBTM {} }
 if (!class_exists('Document_Item')) { class Document_Item extends CommonDBTM {} }
 if (!class_exists('DropdownTranslation')) { class DropdownTranslation extends CommonDBTM {} }
@@ -345,19 +712,6 @@ if (!class_exists('CommonITILValidation')) {
         const WAITING = 2;
         public static function getStatusColor($s) { return '#fff'; }
         public static function getStatus($s) { return (string)$s; }
-    }
-}
-
-// Enrich Html with a few more helpers
-if (!class_exists('Html')) {
-    class Html {
-        public static function back() { return ''; }
-        public static function footer() { return ''; }
-        public static function header($title = '', $self = '', $tab = '', $plugin = '', $extras = '') { return ''; }
-        public static function convDateTime($t = null) { return is_scalar($t) ? (string)$t : ''; }
-        public static function ajaxFooter() { return ''; }
-        public static function hidden($name, $opts = []) { return ''; }
-        public static function submit($label, $opts = []) { return ''; }
     }
 }
 
@@ -415,19 +769,6 @@ if (!class_exists('GlpiPlugin\\Consumables\\CommonITILValidation')) {
     eval('namespace GlpiPlugin\\Consumables; class CommonITILValidation extends \\CommonITILValidation {}');
 }
 
-// Minimal stubs for stockcontrol plugin to reduce analyzer noise
-if (!class_exists('PluginStockcontrolStock')) {
-    class PluginStockcontrolStock extends CommonDBTM { public static function canView() { return true; } public static function canCreate() { return true; } }
-}
-if (!class_exists('PluginStockControlStock')) {
-    class PluginStockControlStock extends PluginStockcontrolStock {}
-}
-if (!class_exists('PluginStockcontrolMenu')) {
-    class PluginStockcontrolMenu { public function display() { return ''; } }
-}
-if (!class_exists('PluginStockControlMenu')) {
-    class PluginStockControlMenu extends PluginStockcontrolMenu {}
-}
 if (!class_exists('PluginMyExampleMyObject')) {
     class PluginMyExampleMyObject extends CommonDBTM {
         public function check(...$a) { return true; }
@@ -452,10 +793,7 @@ if (!class_exists('GlpiPlugin\\Stockcontrol\\Exception')) {
     eval('namespace GlpiPlugin\\Stockcontrol; class Exception extends \\Exception {}');
 }
 
-// CommonGLPI helper expected by some plugins
-if (!class_exists('CommonGLPI')) {
-    class CommonGLPI { public static function getTabNameForItem($item, $with = null) { return ''; } }
-}
+// Minimal stubs for stockcontrol plugin to reduce analyzer noise
 
 // namespaced event class used in some plugins (created via eval to avoid top-level namespace restriction)
 if (!class_exists('\\Glpi\\Event')) {
@@ -479,37 +817,6 @@ if (!class_exists('CommonDBRelation')) {
     class CommonDBRelation extends CommonDBTM {
         public static function getForbiddenStandardMassiveAction() { return []; }
     }
-}
-
-// Static-analysis-only definitive prototypes for commonly-used static helpers
-if (false) {
-    class Html {
-        public static function header_nocache() {}
-        public static function header($title = '', $self = '', $tab = '', $plugin = '', $extras = '') {}
-        public static function footer() {}
-        public static function helpHeader($t = '') {}
-        public static function helpFooter() {}
-        public static function back() {}
-        public static function cleanId(string $id) {}
-        public static function jsAjaxDropdown(...$a) {}
-        public static function convDateTime($t = null) {}
-        public static function hidden($name, $opts = []) {}
-        public static function submit($label, $opts = []) {}
-        public static function closeForm() {}
-    }
-
-    class Session {
-        public static function checkLoginUser() {}
-        public static function checkRight(...$a) {}
-        public static function checkRightOr(...$a) {}
-        public static function getNewIDORToken(...$a) {}
-        public static function getCurrentInterface() {}
-        public static function haveRightsOr(...$a) {}
-    }
-
-    class Plugin { public static function isPluginActive($p = '') {} }
-
-    class CommonITILValidation { const WAITING = 2; const REFUSED = 0; const ACCEPTED = 1; }
 }
 
 // Expand PluginDporegisterProcessing stub with common methods/props used by plugin
@@ -538,7 +845,7 @@ if (!class_exists('PluginDporegisterProcessing')) {
         public static function getActorIcon($t = null) { return ''; }
         public static function getActorFieldNameType($t = null) { return ''; }
         public static function getForeignKeyFieldName() { return 'plugin_dporegister_processing_id'; }
-        public static function getValueToSelect() { return []; }
+        public static function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = []) { return []; }
         public function initForm($id = 0, $opts = []) { }
         public function showFormHeader($opts = []) { }
         public function showFormButtons($opts = []) { }
@@ -552,6 +859,7 @@ if (!class_exists('PluginDporegisterProcessing')) {
 if (!class_exists('Glpi\\Application\\View\\TemplateRenderer')) {
     eval('namespace Glpi\\Application\\View; class TemplateRenderer { public static function getInstance() { return new self(); } public function display($tpl, $vars = []) { return; } }');
 }
+class GlpiApplicationViewTemplateRenderer { public static function getInstance() { return new self(); } public function display($tpl, $vars = []) { return; } }
 
 if (!class_exists('DbUtils')) { class DbUtils { public static function getTableFromField($f) { return ''; } } }
 if (!class_exists('Database')) { class Database extends CommonDBTM { public static function getTable() { return ''; } } }
@@ -571,17 +879,25 @@ if (!function_exists('getEntitiesRestrictCriteria')) { function getEntitiesRestr
 
 // Additional stubs for missing global classes referenced by webapplications frontend
 if (!class_exists('DatabaseInstance')) { class DatabaseInstance extends CommonDBTM { public static function getTable() { return ''; } } }
-if (!class_exists('Impact')) { class Impact { public static function isEnabled($c = null) { return false; } public static function getEnabledItemtypes() { return []; } public static function buildGraph(...$a) { return []; } public static function prepareParams(...$a) { return []; } public static function makeDataForCytoscape(...$a) { return []; } public static function printHeader(...$a) {} public static function displayGraphView(...$a) {} public static function displayListView(...$a) {} public static function printAssetSelectionForm(...$a) {} }
+if (!class_exists('Impact')) { class Impact { public static function isEnabled($c = null) { return false; } public static function getEnabledItemtypes() { return []; } public static function buildGraph(...$a) { return []; } public static function prepareParams(...$a) { return []; } public static function makeDataForCytoscape(...$a) { return []; } public static function printHeader(...$a) {} public static function displayGraphView(...$a) {} public static function displayListView(...$a) {} public static function printAssetSelectionForm(...$a) {} } }
 
 // Glpi plugin hooks constants used in setup.php
-if (!class_exists('Glpi\\Plugin\\Hooks')) {
-    eval('namespace Glpi\\Plugin; class Hooks { const ADD_JAVASCRIPT = 1; const ADD_CSS = 2; }');
-}
+class GlpiPluginHooks { const ADD_JAVASCRIPT = 1; const ADD_CSS = 2; }
 
-// Small missing classes referenced by webapplications
+if (!class_exists('GlpiPlugin\\Behaviors\\Rule')) {
+    eval('namespace GlpiPlugin\\Behaviors; class Rule {}');
+}
 if (!class_exists('KnowbaseItem_Item')) { class KnowbaseItem_Item extends CommonDBTM {} }
-if (!class_exists('Item_OperatingSystem')) { class Item_OperatingSystem extends CommonDBTM {} }
+if (!class_exists('Resource')) {
+    class Resource extends CommonDBTM {
+        public static function getColumnName($column, $order = null) { return ''; }
+    }
+}
 if (!class_exists('IPAddress')) { class IPAddress extends CommonDBTM {} }
 
+if (!class_exists('Glpi\\Tools\\RoboFile')) {
+    eval('namespace Glpi\\Tools { class RoboFile { public function __construct() {} } }');
 }
+
+class GlpiPlugin_Stockcontrol_Exception extends \Exception {}
 

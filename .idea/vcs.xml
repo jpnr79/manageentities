@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/additionalalerts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/addressing" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/assetuserhistory" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/camerainput" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/catsurvey" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/centrodecusto" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/consumables" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contextual" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contratos" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/correios" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cve" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dnsinventory" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dporegister" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/eventsmanager" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extras" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/financialreports" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/footer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gdprropa" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/geststock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gitlabintegration" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/glpibrain" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/glpiwithbookstack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/iframe" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kbrenaming" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ldapcomputers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libresign" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nebackup" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nextool" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/openvas" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/os" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/patchcore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/patchpanel" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/physicalinv" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/positions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/preventivemaintenance" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/printercounters" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/procedimientos" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/projectbridge" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/protocolsmanager" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/reservation" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/resources" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/rgpdtools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/room" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/servicecatalog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/servicios" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/statecheck" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/stockcontrol" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tacticalrmm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/wakeonlan" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/webapplications" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/winadminpassword" vcs="Git" />
+  </component>
+</project>

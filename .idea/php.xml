@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="highlightLevel" value="WARNING" />
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="8c0c2759-b813-4930-88a1-63229b637372" timeout="30000" />
+    </phpcs_settings>
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/composer" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/gregwar/captcha" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/nelexa/zip" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/centrodecusto/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/os/inc/qrcode/vendor/chillerlan/php-qrcode" />
+      <path value="$PROJECT_DIR$/os/inc/qrcode/vendor/chillerlan/php-settings-container" />
+      <path value="$PROJECT_DIR$/os/inc/qrcode/vendor/composer" />
+      <path value="$PROJECT_DIR$/resources/vendor/adldap2/adldap2" />
+      <path value="$PROJECT_DIR$/resources/vendor/composer" />
+      <path value="$PROJECT_DIR$/resources/vendor/illuminate/contracts" />
+      <path value="$PROJECT_DIR$/resources/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/resources/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/resources/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/resources/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/resources/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/resources/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/resources/vendor/tightenco/collect" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.4">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpStan">
+    <PhpStan_settings>
+      <PhpStanConfiguration tool_path="$PROJECT_DIR$/vendor/bin/phpstan" />
+      <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="8c0c2759-b813-4930-88a1-63229b637372" tool_path="$PROJECT_DIR$/vendor/bin/phpstan" timeout="60000" />
+    </PhpStan_settings>
+  </component>
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="Psalm">
+    <Psalm_settings>
+      <psalm_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="8c0c2759-b813-4930-88a1-63229b637372" timeout="60000" />
+    </Psalm_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>

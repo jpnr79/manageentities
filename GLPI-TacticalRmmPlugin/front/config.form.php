@@ -1,9 +1,9 @@
+declare(strict_types=1);
 /****************************************************************************************
  * GLPI TacticalRMM Plugin Config Form
  * Modernized for GLPI 11 and PHP 8.4
  ****************************************************************************************/
 <?php
-declare(strict_types=1);
 /****************************************************************************************
  **
  **      GLPI Plugin for TacticalRMM - Developed by JP Ros

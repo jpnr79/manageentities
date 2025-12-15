@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/assetuserhistory/src" isTestSource="false" packagePrefix="GlpiPlugin\Assetuserhistory\" />
+      <sourceFolder url="file://$MODULE_DIR$/cve" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dnsinventory/lib/netdns2/" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/footer/tools/phpstan/rules" isTestSource="false" packagePrefix="CustomPHPStanRules\" />
+      <sourceFolder url="file://$MODULE_DIR$/glpibrain/src" isTestSource="false" packagePrefix="GLPI\Brain\" />
+      <sourceFolder url="file://$MODULE_DIR$/stockcontrol/inc" isTestSource="false" packagePrefix="GlpiPlugin\Stockcontrol\" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/gregwar/captcha" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/nelexa/zip" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/centrodecusto/vendor/twig/twig" />
+      <excludeFolder url="file://$MODULE_DIR$/os/inc/qrcode/vendor/chillerlan/php-qrcode" />
+      <excludeFolder url="file://$MODULE_DIR$/os/inc/qrcode/vendor/chillerlan/php-settings-container" />
+      <excludeFolder url="file://$MODULE_DIR$/os/inc/qrcode/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/adldap2/adldap2" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/illuminate/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/symfony/var-dumper" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/vendor/tightenco/collect" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpstan" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

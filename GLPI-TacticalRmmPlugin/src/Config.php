@@ -1,7 +1,7 @@
 <?php
-namespace GlpiPlugin\TacticalRmm;
-
 declare(strict_types=1);
+
+namespace GlpiPlugin\TacticalRmm;
 
 class Config
 {
